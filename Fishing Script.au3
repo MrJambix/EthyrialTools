@@ -75,6 +75,11 @@ Func CreateGUI()
 
     $successLabel = GUICtrlCreateLabel("Successful Catch: 0", 50, 110, 200, 20)
 
+    ; Radio buttons for Fishing and Apples
+    Global $fishingRadio = GUICtrlCreateRadio("Fishing", 50, 140, 100, 20)
+    Global $applesRadio = GUICtrlCreateRadio("Apples", 150, 140, 100, 20)
+    GUICtrlSetState($fishingRadio, $GUI_CHECKED)  ; Default select Fishing
+
     $settingsButton = GUICtrlCreateButton("Settings", 10, 260, 80, 30)
     $themeButton = GUICtrlCreateButton("Change Theme", 210, 260, 80, 30)
 
@@ -92,6 +97,20 @@ Func CreateGUI()
         EndIf
         Sleep(100)  ; Reduce CPU usage
     WEnd
+EndFunc
+
+Func StartFishingScript()
+    If $running Then Return
+    $running = True
+    $paused = False
+
+    If GUICtrlRead($fishingRadio) = $GUI_CHECKED Then
+        MsgBox($MB_OK, "Instructions", "Place Fishing Rod on skill Slot 1. Ensure you set the mouse on top of the water location and leave it there.")
+        MainMacroFunction()
+    ElseIf GUICtrlRead($applesRadio) = $GUI_CHECKED Then
+        MsgBox($MB_OK, "Placeholder", "Apple functionality to be implemented.")
+        ; Placeholder for Apple function
+    EndIf
 EndFunc
 
 Func ShowSettings()
@@ -147,19 +166,6 @@ Func PauseScript()
     While Not WinActive($selectedProcess)
         Sleep(500)  ; Check every half second to see if the window has become active
     WEnd
-EndFunc
-
-Func StartFishingScript()
-    If $running Then Return
-    $running = True
-    $paused = False
-    MsgBox($MB_OK, "Instructions", "Place Fishing Rod on skill Slot 1. Ensure you set the mouse on top of the water location and leave it there.")
-    For $i = 5 To 1 Step -1
-        GUICtrlSetData($statusLabel, "Starting in " & $i & " seconds...")
-        Sleep(1000)
-    Next
-    GUICtrlSetData($statusLabel, "Beginning Script")
-    MainMacroFunction()
 EndFunc
 
 Func MainMacroFunction()
